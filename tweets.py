@@ -4,9 +4,9 @@ import openpyxl
 import pytz
 from datetime import datetime
 
-query = "(from:elonmusk)"
+query = 'from:elonmusk OR from:twitter'
 tweets = []
-limits = 30
+limits = 10
 
 for tweet in sntwitter.TwitterSearchScraper(query).get_items():
     if len(tweets) == limits:
@@ -14,8 +14,8 @@ for tweet in sntwitter.TwitterSearchScraper(query).get_items():
     tweet_date = tweet.date
     if tweet_date.tzinfo is not None:
         tweet_date = tweet_date.astimezone(pytz.utc).replace(tzinfo=None)
-    tweets.append([tweet_date, tweet.username, tweet.content])
+    tweets.append([tweet_date, tweet.username, tweet.content + " YourBrand"])
 
 df = pd.DataFrame(tweets, columns=['Date', 'User', 'Tweet'])
-df.to_excel('tweets.xlsx', index=False, sheet_name="TweetsFromElonMusk")
-print("Excel file created successfully.")
+df.to_excel('tweets.xlsx', index=False, sheet_name="TweetsFromBPTHaberAndPusholder")
+print(df)
